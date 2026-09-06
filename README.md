@@ -14,7 +14,7 @@ You need a [Creality Cloud](https://www.crealitycloud.com/) account to connect O
 
 [https://github.com/TitoTB/OctoPrint-Creality-Cloud-2026/archive/refs/heads/main.zip](https://github.com/TitoTB/OctoPrint-Creality-Cloud-2026/archive/refs/heads/main.zip)
 
-2. Paste and install the plugi links via the bundled "Plugin Manager" on OctoPrint.
+2. Paste and install the plugin link via the bundled "Plugin Manager" on OctoPrint.
 
 ![Setup2-1.png](https://cdn.nlark.com/yuque/0/2022/png/22795356/1642471526539-40ed1264-e4d4-41b8-8a58-da74477bb28f.png#clientId=u473873a0-7629-4&crop=0&crop=0&crop=1&crop=1&from=drop&id=ub29fdff4&margin=%5Bobject%20Object%5D&name=Setup2-1.png&originHeight=554&originWidth=700&originalType=binary&ratio=1&rotation=0&showTitle=false&size=80321&status=done&style=none&taskId=u40475215-6d88-4d86-bf78-b11972b0baf&title=)
 ![Setup2-2.png](https://cdn.nlark.com/yuque/0/2022/png/22795356/1642471535104-1a5bcca0-f2d1-42c1-91ab-efa9dc7d2a64.png#clientId=u473873a0-7629-4&crop=0&crop=0&crop=1&crop=1&from=drop&id=u4ac0df39&margin=%5Bobject%20Object%5D&name=Setup2-2.png&originHeight=613&originWidth=738&originalType=binary&ratio=1&rotation=0&showTitle=false&size=137115&status=done&style=none&taskId=ufd1e6fda-5ce7-4d3f-ba08-0ff07c6508d&title=)
@@ -24,12 +24,9 @@ You need a [Creality Cloud](https://www.crealitycloud.com/) account to connect O
 ![Setup3.png](https://cdn.nlark.com/yuque/0/2022/png/22795356/1642471540555-f4bd0b8a-de87-4206-999a-35f7e6da8916.png#clientId=u473873a0-7629-4&crop=0&crop=0&crop=1&crop=1&from=drop&id=u3beba962&margin=%5Bobject%20Object%5D&name=Setup3.png&originHeight=710&originWidth=1088&originalType=binary&ratio=1&rotation=0&showTitle=false&size=158251&status=done&style=none&taskId=uc2f87981-c791-4260-8582-4535f5c8ae5&title=)
 ## **Generate A Key File in Creality Cloud APP:**
 
+1. Download and open the Creality Cloud APP on your phone, go to Workbench > + > Add Device > Raspberry Pi > Create Raspberry Pi > "Download Key File"
+2. Transmit the Key file to your computer.
 
-1. Download and open the Creality Cloud APP on your phone, select "Printing" > click the "+" icon to add device > choose "Raspberry Pi" > click "Create Raspberry Pi" > click "Download Key File".
-1. Transmit the Key file to your computer.
-
-![generateKey2-1.png](https://cdn.nlark.com/yuque/0/2022/png/22795356/1642472400478-ec3dc6d5-b0ef-44b5-be25-a7e8b6aeef3a.png#clientId=ua2b85e21-0c9e-4&crop=0&crop=0&crop=1&crop=1&from=drop&id=u3a745b9e&margin=%5Bobject%20Object%5D&name=generateKey2-1.png&originHeight=590&originWidth=700&originalType=binary&ratio=1&rotation=0&showTitle=false&size=207623&status=done&style=none&taskId=u65e54369-3592-41c3-b17b-69b94574760&title=)
-![generateKey2-2.png](https://cdn.nlark.com/yuque/0/2022/png/22795356/1642471597807-19f4564a-809d-423f-b10c-af0f4b382a65.png#clientId=u473873a0-7629-4&crop=0&crop=0&crop=1&crop=1&from=drop&id=u341045ae&margin=%5Bobject%20Object%5D&name=generateKey2-2.png&originHeight=776&originWidth=840&originalType=binary&ratio=1&rotation=0&showTitle=false&size=289945&status=done&style=none&taskId=uca8cf6be-9d78-43bc-81af-0c6312cb84a&title=)
 ## **Upload the Key File to OctoPrint:**
 
 

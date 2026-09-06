@@ -138,9 +138,11 @@ class CrealitycloudPlugin(
     @octoprint.plugin.BlueprintPlugin.route("/status", methods=["GET"])
     @admin_permission.require(403)
     def get_status(self):
+        country = "US"
         if os.path.exists(f"{self.get_plugin_data_folder()}/config.json"):
-            if self._crealitycloud.get_server_region(self._regionId) is not None:
-                country = self._crealitycloud.get_server_region(self._regionId)
+            server_region = self._crealitycloud.get_server_region(self._regionId)
+            if server_region is not None:
+                country = server_region
             if not self._crealitycloud.iot_connected:
                 self._logger.info("start iot server")
                 self._crealitycloud.device_start()

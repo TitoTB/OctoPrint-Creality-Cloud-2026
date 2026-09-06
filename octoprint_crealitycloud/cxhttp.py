@@ -21,6 +21,11 @@ class CrealityAPI(object):
             "__CXY_PLATFORM_": "5",
             "__CXY_DUID_": "234",
             "__CXY_APP_ID_": "creality_model",
+            "__CXY_APP_VER_": "7.3.20",
+            "__CXY_APP_CH_": "google",
+            "__CXY_BRAND_": "Raspberry",
+            "__CXY_IS_WIFI_": "1",
+            "__CXY_TIMEZONE_": "Europe/Madrid",
             "__CXY_REQUESTID_": self._getQrandData(),
         }
 
@@ -68,8 +73,9 @@ class CrealityAPI(object):
             "Content-Type": "application/json",
             "Origin": "https://www.crealitycloud.com",
             "Referer": "https://www.crealitycloud.com/",
-            "User-Agent": "Mozilla/5.0 (X11; Linux aarch64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+            "User-Agent": "CrealityCloud/7.3.20 (Linux; Android 14)",
             "__CXY_JWTOKEN_": token,
+            "__CXY_TOKEN_": token,
         })
         mac=uuid.UUID(int = uuid.getnode()).hex[-12:].upper()
         data = {"mac": str(mac), "iotType": 2}

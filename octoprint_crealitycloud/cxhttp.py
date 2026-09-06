@@ -3,6 +3,8 @@ import random
 import uuid
 import base64
 import requests
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 
 class CrealityAPIError(Exception):
@@ -55,9 +57,25 @@ class CrealityAPI(object):
         return (("cn", self.__homeurl), ("global", self.__overseaurl))
 
     def _request_json(self, region, url, data, headers, responses, flow):
+        request_body = json.dumps(data).encode("utf-8")
         try:
-            response = requests.post(url, json=data, headers=headers, timeout=10)
-        except requests.RequestException as e:
+            request = Request(url, data=request_body, headers=headers, method="POST")
+            with urlopen(request, timeout=10) as response:
+                status_code = response.status
+                body = response.read().decode("utf-8", errors="replace")
+        except HTTPError as e:
+            status_code = e.code
+            body = e.read().decode("utf-8", errors="replace")
+        except URLError as e:
+            responses.append({
+                "flow": flow,
+                "region": region,
+                "url": url,
+                "request_body": data,
+                "error": str(e.reason),
+            })
+            return None
+        except Exception as e:
             responses.append({
                 "flow": flow,
                 "region": region,
@@ -67,7 +85,6 @@ class CrealityAPI(object):
             })
             return None
 
-        body = response.text
         try:
             parsed = json.loads(body)
         except ValueError:
@@ -78,7 +95,7 @@ class CrealityAPI(object):
             "region": region,
             "url": url,
             "request_body": data,
-            "status_code": response.status_code,
+            "status_code": status_code,
             "body": parsed,
         })
 
@@ -95,9 +112,7 @@ class CrealityAPI(object):
         app_headers.update({
             "Accept": "application/json, text/plain, */*",
             "Content-Type": "application/json",
-            "Origin": "https://www.crealitycloud.com",
-            "Referer": "https://www.crealitycloud.com/",
-            "User-Agent": "CrealityCloud/7.3.20 (Linux; Android 14)",
+            "User-Agent": "CrealityCloud/7.3.20 Android/14",
         })
         mac=uuid.UUID(int = uuid.getnode()).hex[-12:].upper()
         device_name = (device_name or "").strip()

@@ -14,6 +14,30 @@ $(function () {
     
     // TODO: Implement your plugin's view model here.
 
+    self.formatActivationDetails = function (details) {
+      if (!details || !details.length) {
+        return "";
+      }
+
+      return details.map(function (item) {
+        var parts = [item.region || "unknown"];
+        if (item.status_code) {
+          parts.push("HTTP " + item.status_code);
+        }
+        if (item.error) {
+          parts.push(item.error);
+        }
+        if (item.body) {
+          if (typeof item.body === "string") {
+            parts.push(item.body);
+          } else {
+            parts.push(JSON.stringify(item.body));
+          }
+        }
+        return parts.join(": ");
+      }).join("\n");
+    };
+
     self.submitToken = function (token) {
       token = (token || "").trim();
       if (!token) {
@@ -33,7 +57,8 @@ $(function () {
             self.getStatus(true)
           }else{
             var message = data.message || "Fail to install the device due to an invalid token. Please download again or regenerate the Key file.";
-            alert(message + "\n\nCheck octoprint.log for the full Creality Cloud response.");
+            var details = self.formatActivationDetails(data.details);
+            alert(message + (details ? "\n\n" + details : "") + "\n\nCheck octoprint.log for the full Creality Cloud response.");
           }
         },
         error: function (xhr) {

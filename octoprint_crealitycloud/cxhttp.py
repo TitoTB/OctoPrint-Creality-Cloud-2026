@@ -62,7 +62,7 @@ class CrealityAPI(object):
             return tuple(("cn", url) for url in home_urls)
         return tuple(("cn", url) for url in home_urls) + tuple(("global", url) for url in oversea_urls)
 
-    def getconfig(self, token):
+    def getconfig(self, token, device_name=None):
         token = (token or "").strip()
         if not token:
             raise CrealityAPIError("Missing Creality Cloud token")
@@ -79,6 +79,9 @@ class CrealityAPI(object):
         })
         mac=uuid.UUID(int = uuid.getnode()).hex[-12:].upper()
         data = {"mac": str(mac), "iotType": 2}
+        device_name = (device_name or "").strip()
+        if device_name:
+            data["deviceName"] = device_name
         responses = []
 
         for region, url in self._import_urls_for_token(token):

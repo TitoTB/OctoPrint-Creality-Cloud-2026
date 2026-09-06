@@ -86,10 +86,11 @@ class CrealitycloudPlugin(
         try:
             data = request.get_json(silent=True) or {}
             token = (data.get("token") or "").strip()
+            device_name = (data.get("deviceName") or "").strip()
             if not token:
                 return {"code": -1, "message": "Missing Creality Cloud token"}
 
-            response = self._cxapi.getconfig(token)
+            response = self._cxapi.getconfig(token, device_name=device_name)
             self._res = response["result"]
             self._config = {               
                 "deviceName": self._res["deviceName"],

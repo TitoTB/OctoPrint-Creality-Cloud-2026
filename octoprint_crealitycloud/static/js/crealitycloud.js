@@ -38,7 +38,28 @@ $(function () {
       }).join("\n");
     };
 
+    self.extractTokenAndDeviceName = function (rawToken) {
+      var text = (rawToken || "").trim();
+      var result = {
+        token: text,
+        deviceName: (document.getElementById("manual_device_name_input").value || "").trim()
+      };
+
+      text.split(/\r?\n/).forEach(function (line) {
+        var cleaned = line.trim();
+        if (cleaned.indexOf("DN:") === 0 && !result.deviceName) {
+          result.deviceName = cleaned.slice(3).trim();
+        } else if (cleaned.split(".").length === 3) {
+          result.token = cleaned;
+        }
+      });
+
+      return result;
+    };
+
     self.submitToken = function (token) {
+      var activation = self.extractTokenAndDeviceName(token);
+      token = activation.token;
       token = (token || "").trim();
       if (!token) {
         alert("Please provide a Creality Cloud token.");
@@ -49,7 +70,7 @@ $(function () {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         url: PLUGIN_BASEURL + "crealitycloud/get_token",
-        data: JSON.stringify({ token: token }),
+        data: JSON.stringify({ token: token, deviceName: activation.deviceName }),
         dataType: "json",
         success: function (data) {
           if (data.code == 0){

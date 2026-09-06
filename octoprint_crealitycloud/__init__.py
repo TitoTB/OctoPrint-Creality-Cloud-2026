@@ -86,11 +86,10 @@ class CrealitycloudPlugin(
         try:
             data = request.get_json(silent=True) or {}
             token = (data.get("token") or "").strip()
-            device_name = (data.get("deviceName") or "").strip()
             if not token:
                 return {"code": -1, "message": "Missing Creality Cloud token"}
 
-            response = self._cxapi.getconfig(token, device_name=device_name)
+            response = self._cxapi.getconfig(token)
             self._res = response["result"]
             self._config = {               
                 "deviceName": self._res["deviceName"],
@@ -118,46 +117,6 @@ class CrealitycloudPlugin(
         except KeyError as e:
             self._logger.error("Creality Cloud activation response missing field: %s", str(e))
             return {"code": -1, "message": f"Activation response missing field: {e}"}
-        except Exception as e:
-            self._logger.error(str(e))
-            return {"code": -1, "message": str(e)}
-
-    @octoprint.plugin.BlueprintPlugin.route("/save_config", methods=["POST"])
-    @admin_permission.require(403)
-    def save_config(self):
-        try:
-            data = request.get_json(silent=True) or {}
-            raw_config = data.get("config")
-            if isinstance(raw_config, str):
-                raw_config = json.loads(raw_config)
-            if not isinstance(raw_config, dict):
-                return {"code": -1, "message": "Missing Creality Cloud activation JSON"}
-
-            result = raw_config.get("result") if isinstance(raw_config.get("result"), dict) else raw_config
-            device_name = result.get("deviceName")
-            device_secret = result.get("tbToken") or result.get("deviceSecret")
-            iot_type = result.get("iotType", 2)
-            region = result.get("regionId", result.get("region", 1))
-
-            if not device_name or not device_secret:
-                return {"code": -1, "message": "Activation JSON must include deviceName and tbToken/deviceSecret"}
-
-            self._config = {
-                "deviceName": device_name,
-                "deviceSecret": device_secret,
-                "iotType": iot_type,
-                "region": region,
-            }
-            self._regionId = region
-            with io.open(
-                f"{self.get_plugin_data_folder()}/config.json", "w", encoding="utf-8"
-            ) as config_file:
-                json.dump(self._config, config_file, indent=2, separators=(",", ":"))
-
-            self._logger.info("Creality Cloud manual activation config saved for region %s", region)
-            return {"code": 0}
-        except ValueError as e:
-            return {"code": -1, "message": f"Invalid JSON: {e}"}
         except Exception as e:
             self._logger.error(str(e))
             return {"code": -1, "message": str(e)}

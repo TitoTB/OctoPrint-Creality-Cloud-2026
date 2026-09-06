@@ -38,28 +38,21 @@ $(function () {
       }).join("\n");
     };
 
-    self.extractTokenAndDeviceName = function (rawToken) {
+    self.extractToken = function (rawToken) {
       var text = (rawToken || "").trim();
-      var result = {
-        token: text,
-        deviceName: (document.getElementById("manual_device_name_input").value || "").trim()
-      };
 
       text.split(/\r?\n/).forEach(function (line) {
         var cleaned = line.trim();
-        if (cleaned.indexOf("DN:") === 0 && !result.deviceName) {
-          result.deviceName = cleaned.slice(3).trim();
-        } else if (cleaned.split(".").length === 3) {
-          result.token = cleaned;
+        if (cleaned.split(".").length === 3) {
+          text = cleaned;
         }
       });
 
-      return result;
+      return text;
     };
 
     self.submitToken = function (token) {
-      var activation = self.extractTokenAndDeviceName(token);
-      token = activation.token;
+      token = self.extractToken(token);
       token = (token || "").trim();
       if (!token) {
         alert("Please provide a Creality Cloud token.");
@@ -70,7 +63,7 @@ $(function () {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         url: PLUGIN_BASEURL + "crealitycloud/get_token",
-        data: JSON.stringify({ token: token, deviceName: activation.deviceName }),
+        data: JSON.stringify({ token: token }),
         dataType: "json",
         success: function (data) {
           if (data.code == 0){
@@ -100,35 +93,6 @@ $(function () {
     document.getElementById("manual_token_submit").addEventListener("click", function () {
       self.submitToken(document.getElementById("manual_token_input").value);
     });
-
-    self.saveManualConfig = function () {
-      var config = (document.getElementById("manual_config_input").value || "").trim();
-      if (!config) {
-        alert("Please paste the Creality Cloud activation JSON.");
-        return;
-      }
-
-      $.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: PLUGIN_BASEURL + "crealitycloud/save_config",
-        data: JSON.stringify({ config: config }),
-        dataType: "json",
-        success: function (data) {
-          if (data.code == 0) {
-            self.isAcitived(true);
-            self.getStatus(true);
-          } else {
-            alert(data.message || "Could not save the manual Creality Cloud config.");
-          }
-        },
-        error: function () {
-          alert("Manual config save request failed. Check octoprint.log for details.");
-        }
-      });
-    };
-
-    document.getElementById("manual_config_submit").addEventListener("click", self.saveManualConfig);
 
     self.openCrealityCloud = function () {
       window.open("http://www.crealitycloud.com");

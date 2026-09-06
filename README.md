@@ -6,32 +6,15 @@ The main goal of this fork is to be able to connect non-WiFi printers (such as E
 
 ## **Before you start configuring the Plugin:**
 
-You need a Creality Cloud account to connect OctoPrint and Creality Cloud App.
+You need a [Creality Cloud](https://www.crealitycloud.com/) account to connect OctoPrint and Creality Cloud App.
 
 ## **Setup Creality Cloud Plugin on OctoPrint:**
 
+1. Copy the following plugin link.
 
-1. Copy the following three plugin links or copy them from Creality Cloud Github.
+[https://github.com/TitoTB/OctoPrint-Creality-Cloud-2026/archive/refs/heads/main.zip](https://github.com/TitoTB/OctoPrint-Creality-Cloud-2026/archive/refs/heads/main.zip)
 
-
-
-Creality Cloud Plugin:
-
-
-- [https://github.com/msupino/OctoPrint-CrealityCloud/archive/master.zip](https://github.com/msupino/OctoPrint-CrealityCloud/archive/master.zip)
-
-
-
-Plugins that the Creality Cloud Plugin relies on:
-**Required installation or it may cause abnormal temperature or incomplete functionality:**
-
-
-- [https://github.com/SimplyPrint/OctoPrint-Creality2xTemperatureReportingFix/archive/master.zip](https://github.com/SimplyPrint/OctoPrint-Creality2xTemperatureReportingFix/archive/master.zip)
-- [https://github.com/OllisGit/OctoPrint-DisplayLayerProgress/releases/download/1.26.0/master.zip](https://github.com/OllisGit/OctoPrint-DisplayLayerProgress/releases/download/1.26.0/master.zip)
-
-
-
-2. Paste and install the plugin links one by one via the bundled "Plugin Manager" on OctoPrint.
+2. Paste and install the plugi links via the bundled "Plugin Manager" on OctoPrint.
 
 ![Setup2-1.png](https://cdn.nlark.com/yuque/0/2022/png/22795356/1642471526539-40ed1264-e4d4-41b8-8a58-da74477bb28f.png#clientId=u473873a0-7629-4&crop=0&crop=0&crop=1&crop=1&from=drop&id=ub29fdff4&margin=%5Bobject%20Object%5D&name=Setup2-1.png&originHeight=554&originWidth=700&originalType=binary&ratio=1&rotation=0&showTitle=false&size=80321&status=done&style=none&taskId=u40475215-6d88-4d86-bf78-b11972b0baf&title=)
 ![Setup2-2.png](https://cdn.nlark.com/yuque/0/2022/png/22795356/1642471535104-1a5bcca0-f2d1-42c1-91ab-efa9dc7d2a64.png#clientId=u473873a0-7629-4&crop=0&crop=0&crop=1&crop=1&from=drop&id=u4ac0df39&margin=%5Bobject%20Object%5D&name=Setup2-2.png&originHeight=613&originWidth=738&originalType=binary&ratio=1&rotation=0&showTitle=false&size=137115&status=done&style=none&taskId=ufd1e6fda-5ce7-4d3f-ba08-0ff07c6508d&title=)

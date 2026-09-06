@@ -45,73 +45,88 @@ class CrealityAPI(object):
         except Exception:
             return {}
 
-    def _import_urls_for_token(self, token):
-        home_urls = (
-            f"{self.__homeurl}/api/cxy/v2/device/importRaspberrypi",
-            f"{self.__homeurl}/api/cxy/v2/device/user/importDevice",
-        )
-        oversea_urls = (
-            f"{self.__overseaurl}/api/cxy/v2/device/importRaspberrypi",
-            f"{self.__overseaurl}/api/cxy/v2/device/user/importDevice",
-        )
+    def _regions_for_token(self, token):
         issuer = self._decode_jwt_payload(token).get("iss", "")
 
         if "crealitycloud.com" in issuer:
-            return tuple(("global", url) for url in oversea_urls)
+            return (("global", self.__overseaurl),)
         if "crealitycloud.cn" in issuer:
-            return tuple(("cn", url) for url in home_urls)
-        return tuple(("cn", url) for url in home_urls) + tuple(("global", url) for url in oversea_urls)
+            return (("cn", self.__homeurl),)
+        return (("cn", self.__homeurl), ("global", self.__overseaurl))
+
+    def _request_json(self, region, url, data, headers, responses, flow):
+        try:
+            response = requests.post(url, json=data, headers=headers, timeout=10)
+        except requests.RequestException as e:
+            responses.append({
+                "flow": flow,
+                "region": region,
+                "url": url,
+                "request_body": data,
+                "error": str(e),
+            })
+            return None
+
+        body = response.text
+        try:
+            parsed = json.loads(body)
+        except ValueError:
+            parsed = body[:500]
+
+        responses.append({
+            "flow": flow,
+            "region": region,
+            "url": url,
+            "request_body": data,
+            "status_code": response.status_code,
+            "body": parsed,
+        })
+
+        if isinstance(parsed, dict) and parsed.get("code") == 0 and parsed.get("result"):
+            return parsed
+        return None
 
     def getconfig(self, token, device_name=None):
         token = (token or "").strip()
         if not token:
             raise CrealityAPIError("Missing Creality Cloud token")
 
-        headers = dict(self.__headers)
-        headers.update({
+        app_headers = dict(self.__headers)
+        app_headers.update({
             "Accept": "application/json, text/plain, */*",
             "Content-Type": "application/json",
             "Origin": "https://www.crealitycloud.com",
             "Referer": "https://www.crealitycloud.com/",
             "User-Agent": "CrealityCloud/7.3.20 (Linux; Android 14)",
+        })
+        mac=uuid.UUID(int = uuid.getnode()).hex[-12:].upper()
+        device_name = (device_name or "").strip()
+        responses = []
+
+        for region, base_url in self._regions_for_token(token):
+            url = f"{base_url}/api/cxy/v2/device/importDevice"
+            data = {"machineCode": token}
+            result = self._request_json(region, url, data, app_headers, responses, "apk importDevice machineCode")
+            if result:
+                return result
+
+        legacy_headers = dict(app_headers)
+        legacy_headers.update({
             "__CXY_JWTOKEN_": token,
             "__CXY_TOKEN_": token,
         })
-        mac=uuid.UUID(int = uuid.getnode()).hex[-12:].upper()
-        data = {"mac": str(mac), "iotType": 2}
-        device_name = (device_name or "").strip()
+        legacy_data = {"mac": str(mac), "iotType": 2}
         if device_name:
-            data["deviceName"] = device_name
-        responses = []
+            legacy_data["deviceName"] = device_name
 
-        for region, url in self._import_urls_for_token(token):
-            try:
-                response = requests.post(url, json=data, headers=headers, timeout=10)
-            except requests.RequestException as e:
-                responses.append({
-                    "region": region,
-                    "url": url,
-                    "error": str(e),
-                })
-                continue
+        for region, base_url in self._regions_for_token(token):
+            for path in ("/api/cxy/v2/device/importRaspberrypi", "/api/cxy/v2/device/user/importDevice"):
+                url = f"{base_url}{path}"
+                result = self._request_json(region, url, legacy_data, legacy_headers, responses, "legacy token header")
+                if result:
+                    return result
 
-            body = response.text
-            try:
-                parsed = json.loads(body)
-            except ValueError:
-                parsed = body[:500]
-
-            responses.append({
-                "region": region,
-                "url": url,
-                "status_code": response.status_code,
-                "body": parsed,
-            })
-
-            if isinstance(parsed, dict) and parsed.get("code") == 0 and parsed.get("result"):
-                return parsed
-
-        raise CrealityAPIError("Creality Cloud importRaspberrypi/importDevice failed", responses)
+        raise CrealityAPIError("Creality Cloud importDevice/importRaspberrypi failed", responses)
 
     def getAddrress1(self):
         url = f"{self.__homeurl}/api/cxy/v2/common/getAddrress"

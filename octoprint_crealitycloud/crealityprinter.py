@@ -8,7 +8,10 @@ import uuid
 import asyncio
 import queue
 from .signaling_channel import WebSocketClient
-from .webrtc_manager import WebrtcManager
+try:
+    from .webrtc_manager import WebrtcManager
+except ImportError:
+    WebrtcManager = None
 from contextlib import closing
 from enum import Enum
 
@@ -828,6 +831,10 @@ class CrealityPrinter(object):
         self._pc_update_timer = None
 
     def start_webrtc_service(self):
+        if WebrtcManager is None:
+            self._logger.warning("WebRTC dependencies are not installed; livestream is disabled.")
+            return
+
         if self.region == 0:
             URL = "wss://api.crealitycloud.cn/api/cxy/ws/webrtc/signal/push/"
         else:

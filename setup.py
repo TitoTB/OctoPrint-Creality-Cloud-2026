@@ -14,7 +14,7 @@ plugin_package = "octoprint_crealitycloud"
 plugin_name = "OctoPrint-Crealitycloud"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "1.0.9.post1"
+plugin_version = "1.0.9.post2"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
@@ -33,7 +33,7 @@ plugin_url = "https://github.com/crealitycloud/OctoPrint-Crealitycloud"
 plugin_license = "AGPLv3"
 
 # Any additional requirements besides OctoPrint should be listed here
-plugin_requires = ["OctoPrint>1.3.8", "paho_mqtt==1.6.1", "pyjwt==2.8.0", "tb-mqtt-client==1.2", "websocket_client", "av>=10.0.0", "aiortc>=1.5.0"]
+plugin_requires = ["OctoPrint>1.3.8", "paho_mqtt==1.6.1", "pyjwt==2.8.0", "tb-mqtt-client==1.2", "websocket_client"]
 
 ### --------------------------------------------------------------------------------------------------------------------
 ### More advanced options that you usually shouldn't have to touch follow after this point
@@ -43,7 +43,7 @@ plugin_requires = ["OctoPrint>1.3.8", "paho_mqtt==1.6.1", "pyjwt==2.8.0", "tb-mq
 # already be installed automatically if they exist. Note that if you add something here you'll also need to update
 # MANIFEST.in to match to ensure that python setup.py sdist produces a source distribution that contains all your
 # files. This is sadly due to how python's setup.py works, see also http://stackoverflow.com/a/14159430/2028598
-plugin_additional_data = ["bin"]
+plugin_additional_data = []
 
 # Any additional python packages you need to install with your plugin that are not contained in <plugin_package>.*
 plugin_additional_packages = []

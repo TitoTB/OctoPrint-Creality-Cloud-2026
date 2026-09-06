@@ -1,8 +1,0 @@
-logLevel: info
-logDestinations: [stdout]
-
-paths:
-  ch0_0:
-    source: publisher
-  all_others:
-    source: publisher

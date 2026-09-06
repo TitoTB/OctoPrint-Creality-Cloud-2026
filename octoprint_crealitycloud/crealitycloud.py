@@ -452,6 +452,7 @@ class CrealityCloud(object):
             else:
                 ts = calendar.timegm(time.gmtime())
                 self._aliprinter.printId = f"local_{ts}"
+                self._aliprinter.printStartTime = ts
                 self._aliprinter.mcu_is_print = 1
 
             self._aliprinter.state = 1
@@ -518,13 +519,19 @@ class CrealityCloud(object):
             if self._aliprinter.is_cloud_print:
                 self._aliprinter.is_cloud_print = False
 
+            final_print_time = self._aliprinter.printJobTime
+            if self._progress.printJobTime is not None:
+                final_print_time = int(self._progress.printJobTime)
+            elif self._aliprinter.printStartTime:
+                final_print_time = max(0, calendar.timegm(time.gmtime()) - int(self._aliprinter.printStartTime))
+
             self._aliprinter.state = 2
             if self._aliprinter.printId.find("local_") >= 0:
                 self._aliprinter.mcu_is_print = 0
-                self._aliprinter.printId = ""
-            self._aliprinter.printProgress = 0
+            self._aliprinter.printProgress = 100
             self._aliprinter.printLeftTime = 0
-            self._aliprinter.printJobTime = 0
+            self._aliprinter.printJobTime = final_print_time
+            self._aliprinter.sendAttributesAndTelemetry()
 
         # get M114 payload
         elif event == Events.POSITION_UPDATE:

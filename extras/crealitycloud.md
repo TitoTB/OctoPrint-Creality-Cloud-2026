@@ -2,18 +2,18 @@
 layout: plugin
 
 id: crealitycloud
-title: OctoPrint-Crealitycloud
+title: OctoPrint-Creality-Cloud-2026
 description: TODO
 authors:
-- crealitycloud
+- Aguacatec
 license: AGPLv3
 
 # TODO
 date: 2022-04-14
 
-homepage: https://github.com/crealitycloud/OctoPrint-Crealitycloud
-source: https://github.com/crealitycloud/OctoPrint-Crealitycloud
-archive: https://github.com/crealitycloud/OctoPrint-Crealitycloud/archive/master.zip
+homepage: https://github.com/TitoTB/OctoPrint-Creality-Cloud-2026
+source: https://github.com/TitoTB/OctoPrint-Creality-Cloud-2026
+archive: https://github.com/TitoTB/OctoPrint-Creality-Cloud-2026/archive/refs/heads/main.zip
 
 # TODO
 # Set this to true if your plugin uses the dependency_links setup parameter to include

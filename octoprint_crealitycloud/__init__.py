@@ -59,15 +59,15 @@ class CrealitycloudPlugin(
         # for details.
         return {
             "crealitycloud": {
-                "displayName": "Crealitycloud Plugin",
+                "displayName": "Creality Cloud 2026",
                 "displayVersion": self._plugin_version,
                 # version check: github repository
                 "type": "github_release",
-                "user": "crealitycloud",
-                "repo": "OctoPrint-CrealityCloud",
+                "user": "TitoTB",
+                "repo": "OctoPrint-Creality-Cloud-2026",
                 "current": self._plugin_version,
                 # update method: pip
-                "pip": "https://github.com/msupino/OctoPrint-CrealityCloud/archive/{target_version}.zip",
+                "pip": "https://github.com/TitoTB/OctoPrint-Creality-Cloud-2026/archive/refs/heads/main.zip",
             }
         }
 
@@ -208,7 +208,7 @@ class CrealitycloudPlugin(
         return line
 
 
-__plugin_name__ = "Crealitycloud Plugin"
+__plugin_name__ = "Creality Cloud 2026"
 
 __plugin_pythoncompat__ = ">=3,<4"
 

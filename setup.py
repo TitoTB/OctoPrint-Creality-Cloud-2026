@@ -11,23 +11,23 @@ plugin_package = "octoprint_crealitycloud"
 
 # The plugin's human readable name. Can be overwritten within OctoPrint's internal data via __plugin_name__ in the
 # plugin module
-plugin_name = "OctoPrint-Crealitycloud"
+plugin_name = "OctoPrint-Creality-Cloud-2026"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "1.0.9.post12"
+plugin_version = "1.0.9.post14"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """A OctoPrint-Plugin that connect the Octoprint to Creality Could"""
+plugin_description = """An OctoPrint plugin that connects OctoPrint to Creality Cloud"""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
-plugin_author = "hemiao & xiongrui"
+plugin_author = "Aguacatec"
 
 # The plugin's author's mail address.
-plugin_author_email = "hemiao@creality.com"
+plugin_author_email = ""
 
 # The plugin's homepage URL. Can be overwritten within OctoPrint's internal data via __plugin_url__ in the plugin module
-plugin_url = "https://github.com/crealitycloud/OctoPrint-Crealitycloud"
+plugin_url = "https://github.com/TitoTB/OctoPrint-Creality-Cloud-2026"
 
 # The plugin's license. Can be overwritten within OctoPrint's internal data via __plugin_license__ in the plugin module
 plugin_license = "AGPLv3"

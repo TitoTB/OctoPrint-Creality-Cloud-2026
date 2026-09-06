@@ -17,7 +17,7 @@ class CrealityAPI(object):
         self.__overseaurl = "https://api.crealitycloud.com"
         self.__headers = {
             "__CXY_OS_VER_": "v0.0.1",
-            "_CXY_OS_LANG_": "1",
+            "__CXY_OS_LANG_": "1",
             "__CXY_PLATFORM_": "5",
             "__CXY_DUID_": "234",
             "__CXY_APP_ID_": "creality_model",
@@ -41,15 +41,21 @@ class CrealityAPI(object):
             return {}
 
     def _import_urls_for_token(self, token):
-        home_url = f"{self.__homeurl}/api/cxy/v2/device/user/importDevice"
-        oversea_url = f"{self.__overseaurl}/api/cxy/v2/device/user/importDevice"
+        home_urls = (
+            f"{self.__homeurl}/api/cxy/v2/device/importRaspberrypi",
+            f"{self.__homeurl}/api/cxy/v2/device/user/importDevice",
+        )
+        oversea_urls = (
+            f"{self.__overseaurl}/api/cxy/v2/device/importRaspberrypi",
+            f"{self.__overseaurl}/api/cxy/v2/device/user/importDevice",
+        )
         issuer = self._decode_jwt_payload(token).get("iss", "")
 
         if "crealitycloud.com" in issuer:
-            return (("global", oversea_url),)
+            return tuple(("global", url) for url in oversea_urls)
         if "crealitycloud.cn" in issuer:
-            return (("cn", home_url),)
-        return (("cn", home_url), ("global", oversea_url))
+            return tuple(("cn", url) for url in home_urls)
+        return tuple(("cn", url) for url in home_urls) + tuple(("global", url) for url in oversea_urls)
 
     def getconfig(self, token):
         token = (token or "").strip()
@@ -96,7 +102,7 @@ class CrealityAPI(object):
             if isinstance(parsed, dict) and parsed.get("code") == 0 and parsed.get("result"):
                 return parsed
 
-        raise CrealityAPIError("Creality Cloud importDevice failed", responses)
+        raise CrealityAPIError("Creality Cloud importRaspberrypi/importDevice failed", responses)
 
     def getAddrress1(self):
         url = f"{self.__homeurl}/api/cxy/v2/common/getAddrress"

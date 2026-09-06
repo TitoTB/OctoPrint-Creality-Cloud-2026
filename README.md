@@ -1,15 +1,12 @@
-# OctoPrint-Crealitycloud
-![main.png](https://cdn.nlark.com/yuque/0/2022/png/22795356/1642471464755-f2818b50-20a2-4b88-8dcd-ac3a56c80654.png#clientId=u473873a0-7629-4&crop=0&crop=0&crop=1&crop=1&from=drop&id=ub6c0b987&margin=%5Bobject%20Object%5D&name=main.png&originHeight=631&originWidth=700&originalType=binary&ratio=1&rotation=0&showTitle=false&size=443430&status=done&style=none&taskId=u403a724d-b949-42c7-90ae-1a1b334eeb7&title=)
+# OctoPrint Plugin for Creality Cloud (2026)
 
-Creality Cloud plugin needs to be installed in the OctoPrint interface so that you can connect the Creality Cloud APP to the Raspberry Pi device and print or control directly through the APP by operating OctoPrint.
+This is a fork from the [original plugin](https://www.crealitycloud.com/es/help-center/how-to-install-cloud-plugin), since the initial method for authentication got deprecated. The plugin has been rebuild to acept current '.tk' files provided by Creality Cloud APP.
 
+The main goal of this fork is to be able to connect non-WiFi printers (such as Ender 3 V3 SE) to Creality Cloud, in order to get points any time you print. No other functionalities have been tested or replicated.
 
 ## **Before you start configuring the Plugin:**
-The Creality Cloud plugin needs to enable cloud services, and your 3D printing data will be uploaded to the 
-cloud server, such as temperature, printing speed, printing status, etc. More detailed information about the privacy policy can be viewed:
-- [https://www.crealitycloud.com/policy?type=policy](https://www.crealitycloud.com/policy?type=policy)
 
-You need a Creality Cloud account to connect octoprint and Creality Cloud App.More detailed information about the privacy policy can be viewed inside the Creality Cloud App navigating to My Space > About > User Agreement
+You need a Creality Cloud account to connect OctoPrint and Creality Cloud App.
 
 ## **Setup Creality Cloud Plugin on OctoPrint:**
 

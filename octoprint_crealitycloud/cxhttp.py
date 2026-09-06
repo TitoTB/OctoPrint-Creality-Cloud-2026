@@ -1,6 +1,7 @@
 import json
 import random
 import uuid
+import base64
 import requests
 
 
@@ -30,24 +31,47 @@ class CrealityAPI(object):
         r = random.random() % (99999 - 10000) + 10000
         return f"Raspberry{time.tm_sec}{10}{r}"  # time.tvm_usec
 
-    def getconfig(self, token):
+    def _decode_jwt_payload(self, token):
+        try:
+            payload = token.split(".")[1]
+            payload += "=" * (-len(payload) % 4)
+            payload = payload.replace("-", "+").replace("_", "/")
+            return json.loads(base64.b64decode(payload).decode("utf-8"))
+        except Exception:
+            return {}
+
+    def _import_urls_for_token(self, token):
         home_url = f"{self.__homeurl}/api/cxy/v2/device/user/importDevice"
         oversea_url = f"{self.__overseaurl}/api/cxy/v2/device/user/importDevice"
+        issuer = self._decode_jwt_payload(token).get("iss", "")
+
+        if "crealitycloud.com" in issuer:
+            return (("global", oversea_url),)
+        if "crealitycloud.cn" in issuer:
+            return (("cn", home_url),)
+        return (("cn", home_url), ("global", oversea_url))
+
+    def getconfig(self, token):
         token = (token or "").strip()
         if not token:
             raise CrealityAPIError("Missing Creality Cloud token")
 
-        headers = {
+        headers = dict(self.__headers)
+        headers.update({
+            "Accept": "application/json, text/plain, */*",
             "Content-Type": "application/json",
-            "__CXY_JWTOKEN_": token
-        }
+            "Origin": "https://www.crealitycloud.com",
+            "Referer": "https://www.crealitycloud.com/",
+            "User-Agent": "Mozilla/5.0 (X11; Linux aarch64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+            "__CXY_JWTOKEN_": token,
+        })
         mac=uuid.UUID(int = uuid.getnode()).hex[-12:].upper()
-        data = f'{{"mac": "{mac}" , "iotType": 2}}'
+        data = {"mac": str(mac), "iotType": 2}
         responses = []
 
-        for region, url in (("cn", home_url), ("global", oversea_url)):
+        for region, url in self._import_urls_for_token(token):
             try:
-                response = requests.post(url, data=data, headers=headers, timeout=5)
+                response = requests.post(url, json=data, headers=headers, timeout=10)
             except requests.RequestException as e:
                 responses.append({
                     "region": region,

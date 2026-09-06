@@ -101,6 +101,35 @@ $(function () {
       self.submitToken(document.getElementById("manual_token_input").value);
     });
 
+    self.saveManualConfig = function () {
+      var config = (document.getElementById("manual_config_input").value || "").trim();
+      if (!config) {
+        alert("Please paste the Creality Cloud activation JSON.");
+        return;
+      }
+
+      $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: PLUGIN_BASEURL + "crealitycloud/save_config",
+        data: JSON.stringify({ config: config }),
+        dataType: "json",
+        success: function (data) {
+          if (data.code == 0) {
+            self.isAcitived(true);
+            self.getStatus(true);
+          } else {
+            alert(data.message || "Could not save the manual Creality Cloud config.");
+          }
+        },
+        error: function () {
+          alert("Manual config save request failed. Check octoprint.log for details.");
+        }
+      });
+    };
+
+    document.getElementById("manual_config_submit").addEventListener("click", self.saveManualConfig);
+
     self.openCrealityCloud = function () {
       window.open("http://www.crealitycloud.com");
     };
